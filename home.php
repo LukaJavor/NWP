@@ -28,7 +28,7 @@
                 <h2>Planinarske staze</h2>
                 
                 <p>Planinarske staze u Hrvatskoj označene su crveno-bijelim oznakama (markacijama). Uređivanje i održavanje planinarskih staza obavljaju markacisti organizirani u markacijskim sekcijama ili komisijama planinarskih društava. Njihov rad usklađuje Komisija za planinarske putove Hrvatskog planinarskog saveza.
-                    Na Medvednici postoji 70tak planinarskih staza, a sve detalje o njima, kao što su težina, duljina staze u km, vrijeme hoda, profil staze, karta s detaljima… možete saznati <a href="http://www.medvednica.info/p/planinarske-staze.htmlhttp://www.medvednica.info/p/planinarske-staze.html">ovdje.</a><br><br> 
+                    Na Medvednici postoji 70tak planinarskih staza, a sve detalje o njima, kao što su težina, duljina staze u km, vrijeme hoda, profil staze, karta s detaljima… možete saznati <a href="https://www.pp-medvednica.hr/turisticka-ponuda/planinarske-staze/">ovdje.</a><br><br> 
                     Također, odličnu kartu Medvednice Hrvatske Gorske službe spašavanja možete pronaći na ovom linku <a href="http://www.hgss.hr/kartografija/">HGSS karta Medvednice.</a>
                 </p>
                 </div>
