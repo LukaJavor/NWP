@@ -54,60 +54,87 @@
 		<p><a href="index.php?menu='.$menu.'&amp;action='.$action.'">Natrag</a></p>';
 	}
 	#Edit user profile
-	else if (isset($_GET['edit']) && $_GET['edit'] != '') {
-		$query  = "SELECT * FROM users";
-		$query .= " WHERE id=".$_GET['edit'];
-		$result = @mysqli_query($MySQL, $query);
-		$row = @mysqli_fetch_array($result);
-		$checked_archive = false;
+else if (isset($_GET['edit']) && $_GET['edit'] != '') {
+	$query  = "SELECT * FROM users";
+	$query .= " WHERE id=" . (int)$_GET['edit'];
+	$result = mysqli_query($MySQL, $query);
+	$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+	
+	print '
+	<h2>Uredi profil</h2>
+	<form action="" id="registration_form" name="registration_form" method="POST">
+		<input type="hidden" id="_action_" name="_action_" value="TRUE">
+		<input type="hidden" id="edit" name="edit" value="' . (int)$_GET['edit'] . '">
 		
-		print '
-		<h2>Uredi profil</h2>
-		<form action="" id="registration_form" name="registration_form" method="POST">
-			<input type="hidden" id="_action_" name="_action_" value="TRUE">
-			<input type="hidden" id="edit" name="edit" value="' . $_GET['edit'] . '">
-			
-			<label for="fname">Ime *</label>
-			<input type="text" id="fname" name="firstname" value="' . $row['firstname'] . '" placeholder="Vaše ime.." required>
+		<label for="fname">Ime *</label>
+		<input type="text" id="fname" name="firstname" value="' . htmlspecialchars($row['firstname'], ENT_QUOTES, 'UTF-8') . '" placeholder="Vaše ime.." required>
 
-			<label for="lname">Prezime *</label>
-			<input type="text" id="lname" name="lastname" value="' . $row['lastname'] . '" placeholder="Vaše prezime.." required>
-				
-			<label for="email">E-mail *</label>
-			<input type="email" id="email" name="email"  value="' . $row['email'] . '" placeholder="Vaš e-mail.." required>
+		<label for="lname">Prezime *</label>
+		<input type="text" id="lname" name="lastname" value="' . htmlspecialchars($row['lastname'], ENT_QUOTES, 'UTF-8') . '" placeholder="Vaše prezime.." required>
 			
+		<label for="email">E-mail *</label>
+		<input type="email" id="email" name="email" value="' . htmlspecialchars($row['email'], ENT_QUOTES, 'UTF-8') . '" placeholder="Vaš e-mail.." required>
+		
+		<label for="country">Država</label>
+		<select name="country" id="country">
+			<option value="">molimo odaberite</option>';
 			
-			<label for="country">Država</label>
-			<select name="country" id="country">
-				<option value="">molimo odaberite</option>';
-				#Select all countries from database webprog, table countries
-				$_query  = "SELECT * FROM countries";
-				$_result = @mysqli_query($MySQL, $_query);
-				while($_row = @mysqli_fetch_array($_result)) {
-					print '<option value="' . $_row['country_code'] . '"';
-					if ($row['country'] == $_row['country_code']) { print ' selected'; }
-					print '>' . $_row['country_name'] . '</option>';
+			$_query  = "SELECT country_code, country_name FROM countries ORDER BY country_name ASC";
+			$_result = mysqli_query($MySQL, $_query);
+
+			while ($_row = mysqli_fetch_array($_result, MYSQLI_ASSOC)) {
+				print '<option value="' . htmlspecialchars($_row['country_code'], ENT_QUOTES, 'UTF-8') . '"';
+
+				if ($row['country'] == $_row['country_code']) {
+					print ' selected';
 				}
-			print '
-			</select>
-			
-			<label for="city">Grad</label>
-			<input type="text" id="city" name="city"  placeholder="Grad.." required><br>
 
-            <label for="adress">Adresa</label>
-			<input type="text" id="adress" name="adress"  placeholder="Adresa.." required><br>
+				print '>' . htmlspecialchars($_row['country_name'], ENT_QUOTES, 'UTF-8') . '</option>';
+			}
 
-            <label for="date">Datum rođenja</label>
-			<input type="date" id="date" name="date" required><br>
-			
-			<label for="adress">Role:</label>
-			<input type="text" id="role" name="role"  placeholder="role" required><br>
-			<hr>
-			
-			<input type="submit" value="Submit">
-		</form>
-		<p><a href="index.php?menu='.$menu.'&amp;action='.$action.'">Natrag</a></p>';
-	}
+		print '
+		</select>
+		
+		<label for="city">Grad</label>
+		<input type="text" id="city" name="city" value="' . htmlspecialchars($row['city'], ENT_QUOTES, 'UTF-8') . '" placeholder="Grad.." required><br>
+
+		<label for="adress">Adresa</label>
+		<input type="text" id="adress" name="adress" value="' . htmlspecialchars($row['adress'], ENT_QUOTES, 'UTF-8') . '" placeholder="Adresa.." required><br>
+
+		<label for="date">Datum rođenja</label>
+		<input type="date" id="date" name="date" value="' . htmlspecialchars($row['date'], ENT_QUOTES, 'UTF-8') . '" required><br>
+		
+		<label for="role">Uloga</label>
+		<select name="role" id="role" required>
+			<option value="user"';
+
+			if ($row['role'] == 'user') {
+				print ' selected';
+			}
+
+			print '>Korisnik</option>
+			<option value="editor"';
+
+			if ($row['role'] == 'editor') {
+				print ' selected';
+			}
+
+			print '>Editor</option>
+			<option value="admin"';
+
+			if ($row['role'] == 'admin') {
+				print ' selected';
+			}
+
+			print '>Administrator</option>
+		</select><br>
+
+		<hr>
+		
+		<input type="submit" value="Spremi promjene">
+	</form>
+	<p><a href="index.php?menu='.$menu.'&amp;action='.$action.'">Natrag</a></p>';
+}
 	else {
 		print '
 		<h2>Popis korisnika</h2>
