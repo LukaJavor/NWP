@@ -45,30 +45,26 @@
 		</form>';
 	}
 	else if ($_POST['_action_'] == TRUE) {
-		
-		$query  = "SELECT * FROM users";
-		$query .= " WHERE email='" .  $_POST['email'] . "'";
-		$result = @mysqli_query($MySQL, $query);
-		$row = @mysqli_fetch_array($result, MYSQLI_ASSOC);
-		
-		if ($row['email'] == '') {
-			# password_hash https://secure.php.net/manual/en/function.password-hash.php
-			# password_hash() creates a new password hash using a strong one-way hashing algorithm
-			$pass_hash = password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]);
-			
-			$query  = "INSERT INTO users (firstname, lastname, email, password, country, city, adress, date)";
-			$query .= " VALUES ('" . $_POST['firstname'] . "', '" . $_POST['lastname'] . "', '" . $_POST['email'] . "', '" . $pass_hash . "', '" . $_POST['country'] . "', '" . $_POST['city'] . "', '" . $_POST['adress'] . "', '" . $_POST['date'] . "')";
-			$result = @mysqli_query($MySQL, $query);
-			
-			# ucfirst() — Make a string's first character uppercase
-			# strtolower() - Make a string lowercase
-			echo '<p>' . ucfirst(strtolower($_POST['firstname'])) . ' ' .  ucfirst(strtolower($_POST['lastname'])) . ', thank you for registration </p>
-			<hr>';
-		}
-		else {
-			echo '<p>User with this email or username already exist!</p>';
-		}
-	}
+    
+    $query  = "SELECT * FROM users";
+    $query .= " WHERE email='" .  $_POST['email'] . "'";
+    $result = mysqli_query($MySQL, $query);
+    $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+    
+    if ($row === null) {
+        $pass_hash = password_hash($_POST['password'], PASSWORD_DEFAULT, ['cost' => 12]);
+        
+        $query  = "INSERT INTO users (firstname, lastname, email, password, country, city, adress, date)";
+        $query .= " VALUES ('" . $_POST['firstname'] . "', '" . $_POST['lastname'] . "', '" . $_POST['email'] . "', '" . $pass_hash . "', '" . $_POST['country'] . "', '" . $_POST['city'] . "', '" . $_POST['adress'] . "', '" . $_POST['date'] . "')";
+        $result = mysqli_query($MySQL, $query);
+        
+        echo '<p>' . ucfirst(strtolower($_POST['firstname'])) . ' ' .  ucfirst(strtolower($_POST['lastname'])) . ', thank you for registration </p>
+        <hr>';
+    }
+    else {
+        echo '<p>User with this email already exists!</p>';
+    }
+}
 	print '
 	</div>';
 ?>
